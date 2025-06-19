@@ -1,0 +1,10 @@
+{
+  "name": "batchsell",
+  "tree": {
+    "$className": "DataModel",
+
+    "ReplicatedStorage": {
+      "$path": "src"
+    }
+  }
+}
