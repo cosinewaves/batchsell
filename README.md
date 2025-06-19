@@ -43,7 +43,7 @@ local BatchSell = require(path.to.BatchSell)
 ```lua
 type SellConfig = {
 	onSellItem: (item: Tool) -> number,
-	blacklistedTags: { string }?, -- default: { "Feed" }
+	blacklistedTags: { string }?, -- default: { "Locked" }
 	minBatchSize: number?,        -- default: 5
 	maxBatchSize: number?,        -- default: 50
 	benchmarkThreshold: number?, -- default: 50 (items)

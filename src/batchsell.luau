@@ -9,7 +9,6 @@ export type SellConfig = {
 	blacklistedTags: { string }?, -- optional list of tags to skip
 	minBatchSize: number?, -- default: 5
 	maxBatchSize: number?, -- default: 50
-	benchmarkThreshold: number?, -- default: 50 (number of items to trigger timing logs)
 }
 
 local function GetAdaptiveBatchSize(count: number, minBatch: number, maxBatch: number): number
@@ -31,9 +30,7 @@ local function BatchSell(items: {Tool}, config: SellConfig)
 	local blacklistedTags = config.blacklistedTags or { "Feed" }
 	local minBatch = config.minBatchSize or 5
 	local maxBatch = config.maxBatchSize or 50
-	local benchmarkThreshold = config.benchmarkThreshold or 50
 
-	local totalWorth = 0
 	local player: Player? = nil
 	local filteredItems = {}
 
@@ -46,7 +43,6 @@ local function BatchSell(items: {Tool}, config: SellConfig)
 
 	local itemCount = #filteredItems
 	local batchSize = GetAdaptiveBatchSize(itemCount, minBatch, maxBatch)
-	local startTime = os.clock()
 
 	for i = 1, itemCount, batchSize do
 		for j = i, math.min(i + batchSize - 1, itemCount) do
@@ -59,24 +55,11 @@ local function BatchSell(items: {Tool}, config: SellConfig)
 					player = item.Parent.Parent :: Player
 				end
 
-				local worth = onSellItem(item)
-				print(`[BatchSell] Sold {item.Name} for ${worth}`)
-				totalWorth += worth
-				item:Destroy()
+				onSellItem(item)
 			end
 		end
 		task.wait()
 	end
-
-	if player and totalWorth > 0 then
-		print(`[BatchSell] Total earned: ${totalWorth} by {player.Name}`)
-	end
-
-	local duration = os.clock() - startTime
-	if itemCount >= benchmarkThreshold then
-		local ms = math.floor(duration * 1000)
-		print(`[BatchSell] Sold {itemCount} items in {ms} ms (BatchSize: {batchSize})`)
-	end
 end
 
-return BatchSell
+return BatchSell.BatchSell
