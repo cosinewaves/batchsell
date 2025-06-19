@@ -25,7 +25,7 @@ local function HasBlacklistedTag(item: Instance, blacklistedTags: {string}): boo
 	return false
 end
 
-local function BatchSell(items: {Tool}, config: SellConfig)
+function BatchSell(items: {Tool}, config: SellConfig)
 	local onSellItem = config.onSellItem
 	local blacklistedTags = config.blacklistedTags or { "Feed" }
 	local minBatch = config.minBatchSize or 5
