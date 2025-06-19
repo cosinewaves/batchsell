@@ -1,5 +1,7 @@
 # Project place file
 /batchsell.rbxlx
+/sourcemap.json
+/rokit.toml
 
 # Roblox Studio lock files
 /*.rbxlx.lock
